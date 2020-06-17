@@ -1,0 +1,2 @@
+ - I'm blind, so the GUI is NOT going to look great. It works, though.
+ - For the same reason, there's no flow chart/diagram. However, there's something that vaguely resembles pseudocode in a file called "pseudocode.txt" in the project.

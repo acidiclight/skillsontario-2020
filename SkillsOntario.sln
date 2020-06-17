@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillsOntario.ContestentMan
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2C6B23A4-4F2D-4105-BB2C-AD0507C3EAD4}"
 	ProjectSection(SolutionItems) = preProject
+		NOTES.txt = NOTES.txt
 		README.md = README.md
 		Virtual_Competition_Safety_Checklist_2020_Finalized.docx = Virtual_Competition_Safety_Checklist_2020_Finalized.docx
 	EndProjectSection
