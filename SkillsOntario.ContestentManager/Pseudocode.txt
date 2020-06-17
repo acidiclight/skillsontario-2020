@@ -1,0 +1,134 @@
+﻿PROGRAM START:
+	- Initialize the GUI
+		- Set up the initial state of the "Sort By" dropdown.
+			- Drop down should have friendly options for:
+				- "ID"
+				" Last Name"
+				- "Score"
+				- "First Name"
+			- Default value should be "ID"
+		- Set up the initial state of the Filter GUI
+			- "Filter Type" dropdown should have friendly options for
+				- "None"
+				- "Last Name"
+				- "Birth Date"
+				- "District"
+				- "Contest"
+			- Default value should be "None".
+			- Default value of the "Filter Value" text box should be empty.
+	- Load or create the boards.txt file.
+		- If the boards.txt file exists:
+			- Read every line of text in the file and store it in a List for later.
+		- If not:
+			- Create a blank boards.txt file.
+			- Tell the user that they need to edit the file before starting the program. Show them the path.
+			- Exit the program when the user hits "OK".
+	- Load all Contestant files into the program.
+		- If the Contestant Directory isn't found,
+			- Create it.
+		- For each file in the Contestant Directory:
+			- If it's a .dat file:
+				- Start reading the file as binary data
+				- If the file's magic header matches the binary value of the text "Son7":
+					- Read the student's Student ID as a number.
+					- Read the student's First and Last Name as text
+					- Read their email as text.
+					- Read their Schoolboard ID as a number.
+					- If their District ID is below 1 or above the number of valid districts in boards.txt:
+						- Their board is "None" and it needs to be updated.
+					- Else:
+						- Their board is the text on the line number of boards.txt represented by the read-in Board ID minus 1.
+					- NOTE: An ID of 0 will always represent "None".
+					- Read the student's Date of Birth in as a 64-bit number storing the date and time as Ticks. This is the Windows version of the Unix epoch time.
+					- Read the student's Contest Name as text.
+					- Read the student's Score Value as a single precision floating-point number.
+					- With the data read in, store it, along with the path to the contestant file, in a new Contestant object and store that object in a List of Contestants.
+	- Display contestants in the data list:
+		- Clear the data list.
+		- Apply the selected Sort Type to the contestants list
+		- Apply the selected Filter Type to the sorted list of Contestants
+		- For each Contestant in the Filtered list:
+			- Create a List View Item
+			- Set the text to the student's ID 8-digit zero-padded ID
+			- Add the full student name as a Sub Item
+			- Add the student's date of birth formatted as dd/mm/yyyy as a Sub Item
+			- Add the student's Contest name as a Sub Item
+			- Add the student's Score as a Sub Item
+			- Add the List View Item to the List View.
+		- Clear the drop-down for "Top Three In Contest:"
+		- Add all unique Contest Names to that drop down.
+
+WHEN USER CLICKS CREATE OR EDIT:
+	- Open the "Editor" dialog box
+	- If the button clicked was "Create":
+		- A new contestant with the ID of -1 (invalid) is created.
+	- Else:
+		- The editor is populated with the information of the existing selected contestant.
+	- User fills in the form.
+	
+	- WHEN USER CLICKS CANCEL:
+		- Close the dialog without saving the contestant.
+
+	- WHEN THE USER CLICKS SAVE:
+		- Make sure the First and Last Names aren't empty. Show an error if they are.
+		- Make sure there isn't an existing student with the given First and Last name. Show an error if there is.
+		- Make sure a Contact Email is given. Show an error if not.
+		- Make sure a District that isn't "None" is selected. Show an error if not.
+		- Make sure a non-blank Contest Name is entered. Show an error if not.
+		- Generate a new unique Student ID if the current ID is -1.
+		- Save the Contestant's data to disk.
+		- Repopulate the Contestant data list to reflect the changes.
+		- Close the Editor.
+
+WHEN USER CLICKS "DELETE" AND A STUDENT IS SELECTED:
+	- Ask "Are you sure you want to do this?"
+	- If Yes:
+		- Delete the student from the directory and update the UI to show it.
+	- If No:
+		- Do nothing.
+
+WHEN THE USER CLICKS "CLEAR ALL":
+	- Ask "Are you sure you want to do this?"
+	- If Yes:
+		- Delete the Contestants directory entirely.
+		- Recreate it with no files in it.
+		- Update the UI to reflect the huge mistake the user just made.
+
+WHEN THE USER SELECTS A SORT TYPE:
+	- Update the data list to reflect it.
+	- Sort by ID:
+		- Display all contestants sorted by student ID in ascending order.
+	- Sort by First Name:
+		- Display all contestants sorted alphabetically by first name.
+	- Sort by Last Name:
+		- Display all contestants sorted alphabetically by last name.
+	- Sort by Score:
+		- Display each contestant sorted by score in DESCENDING order (highest to lowest.)
+
+WHEN USER SELECTS AND APPLIES A FILTER TYPE:
+	- Repopulate the data list to reflect it.
+	- Filter types and behaviour:
+		- None:
+			- Show all students. No filter applies.
+		- Last Name:
+			- Show all students whose last name contains the given text. Value is case insensitive.
+		- Contest:
+			- Show all students whose contest name contains the given text. Value is case insensitive.
+		- District:
+			- Show all students who belong to a district containing the given text. Value is case-insensitive.
+		- Date of Birth:
+			- This is dodgy.
+			- Show students whose birth date contains the given text.
+		- Anything else:
+			- Use "None" behaviour.
+
+WHEN USER SELECTS A "TOP THREE" CONTEST AND HITS "GO":
+	- If an invalid contest was selected, show an error.
+	- Else:
+		- Get the top 3 students in the contest based on highest score.
+		- Display a message box that looks like this:
+			- "For the SkillsOntario <contest name> Contest, these are the top <winner count> contestant(s).
+			
+				- <STUDENT NAME 1> from <District 1>, with a score of <Score 1>%.
+				- <STUDENT NAME 2> from <District 2>, with a score of <Score 2>%.
+				- <STUDENT NAME 3> from <District 3>, with a score of <Score 3>%."
